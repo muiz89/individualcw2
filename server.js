@@ -4,7 +4,7 @@ const { ObjectId } = require('mongodb');
 const app = express();
 
 app.use(express.json());
-app.set('port', 3000);
+
 app.use((req, res, next) => {
 
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -20,10 +20,11 @@ let db;
 MongoClient.connect("mongodb+srv://root:root@cluster0.kdf3p.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
     , (err, client) => {
         db = client.db('Lesson');
+        console.log("database connected");
     })
 
 app.get('/', (req, res, next) => {
-    res.sendFile('text.html', { root: __dirname });
+    res.send("welcome to backend");
 })
 
 app.param('collectionName', (req, res, next, collectionName) => {
@@ -43,9 +44,7 @@ app.post('/collection/:collectionName', (req, res, next) => {
         if (e) return next(e)
         let response = { "message": "success" }
         res.send(response);
-        // console.log("fuck this shit")
     })
-    // console.log(req.body);
 })
 
 const ObjectID = require('mongodb').ObjectID;
@@ -71,4 +70,8 @@ app.put('/collection/:collectionName/:id', (req, res, next) => {
             res.send(result.modifiedCount === 1 ? { msg: 'success' } : { msg: 'error' })
         })
     console.log(req.body)
+})
+
+app.listen(process.env.PORT || 3000,()=> {
+    console.log("app running");
 })
