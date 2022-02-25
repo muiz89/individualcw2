@@ -13,7 +13,10 @@ app.use((req, res, next) => {
     res.header('Access-Control-Allow-Methods', '*');
     next();
 })
-
+app.use((req, res, next) => {
+    console.log(req.url);
+    next()
+})
 const MongoClient = require('mongodb').MongoClient;
 
 let db;
